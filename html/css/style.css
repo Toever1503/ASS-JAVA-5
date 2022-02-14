@@ -1,0 +1,34 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+img{
+    width: 100%;
+}
+
+aside{
+    border-left: 1px solid black;
+    padding: 2px;
+}
+aside .cart{
+    border: 1px solid gainsboro;
+}
+
+aside .categories{
+    border: 1px solid gainsboro;
+    margin: 5px auto;
+}
+
+aside .productItem{
+    display: flex;
+    border-bottom: 1px solid gainsboro;
+}
+
+aside .topSales .productImage{
+    height: 100px;
+    background-size: cover;
+}
+.contact p{
+    padding: 0;
+    margin: 0;
+}

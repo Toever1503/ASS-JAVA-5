@@ -2,8 +2,10 @@ package com.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
@@ -23,11 +25,12 @@ public class WebConfigure implements WebMvcConfigurer {
         configurer.setCheckRefresh(true);
         return configurer;
     }
-//
-//    @Bean
-//    public TilesViewResolver tilesViewResolver() {
-//        final TilesViewResolver resolver = new TilesViewResolver();
-//        resolver.setViewClass(TilesView.class);
-//        return resolver;
-//    }
+
+    @Bean
+    public ViewResolver viewResolver() {
+        UrlBasedViewResolver viewResolver = new UrlBasedViewResolver();
+        viewResolver.setViewClass(TilesView.class);
+        return viewResolver;
+    }
+
 }

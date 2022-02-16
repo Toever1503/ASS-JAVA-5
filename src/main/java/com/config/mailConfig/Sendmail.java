@@ -12,7 +12,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 
-@Component
+//@Component
 public class Sendmail {
     private final JavaMailSender javaMailSender;
     Logger mailLogger = LoggerFactory.getLogger(Sendmail.class);

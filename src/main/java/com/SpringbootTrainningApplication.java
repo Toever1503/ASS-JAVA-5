@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @SpringBootApplication
-@EnableCaching
+//@EnableCaching
 public class SpringbootTrainningApplication {
 
     public static void main(String[] args) {
@@ -18,18 +18,18 @@ public class SpringbootTrainningApplication {
         SpringApplication.run(SpringbootTrainningApplication.class, args);
     }
 
-    @Bean
-    public static JavaMailSender javaMailSender(){
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.mailtrap.io");
-        mailSender.setPort(465);
-
-        mailSender.setUsername("0845954f4600a5");
-        mailSender.setPassword("8252158432ddf2");
-
-        Properties props = mailSender.getJavaMailProperties();
-        props.setProperty("mail.smtp.auth", "true");
-
-        return mailSender;
-    }
+//    @Bean
+//    public static JavaMailSender javaMailSender(){
+//        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+//        mailSender.setHost("smtp.mailtrap.io");
+//        mailSender.setPort(465);
+//
+//        mailSender.setUsername("0845954f4600a5");
+//        mailSender.setPassword("8252158432ddf2");
+//
+//        Properties props = mailSender.getJavaMailProperties();
+//        props.setProperty("mail.smtp.auth", "true");
+//
+//        return mailSender;
+//    }
 }

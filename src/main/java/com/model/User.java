@@ -32,9 +32,7 @@ public class User implements Serializable {
     @Column(name = "email", nullable = false)
     @NotNull
     private String email;
-    @Column(name = "phone", length = 12)
-    @NotNull
-    private Integer phone;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "user_authority", joinColumns = {
             @JoinColumn(name = "user_id")

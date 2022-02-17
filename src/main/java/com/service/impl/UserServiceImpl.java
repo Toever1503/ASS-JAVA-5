@@ -16,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Primary
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository repo;
 
@@ -40,18 +38,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Caching(
-            cacheable = @Cacheable(value = "user", key = "#result.username")
-            ,
-            put = @CachePut(value = "user", key = "#result.username")
-    )
     public User findById(Long id) {
         return repo.findById(id).get();
     }
 
     @Override
-    @CachePut(value =
-            "user", key = "#result.username")
     public User save(User obj) {
         Set<Authority> auths = new HashSet<Authority>(); // make new auth list
 
@@ -68,7 +59,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @CacheEvict(cacheNames = {"user", "users", "userCount"}, allEntries = true)
     public User deleteById(Long id) {
         User obj = findById(id); // fetch user by id
         obj.setUserAuths(null); // set null for auths, if not set, jpa will clear all 3 tables
@@ -77,11 +67,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    @Caching(
-            cacheable = @Cacheable(value = "users", key = "#page")
-            ,
-            put = @CachePut(value = "users", key = "#page")
-    )
     public List<User> findAll(Specification specs, int page) {
         return repo.findAll(specs, PageRequest.of(page, 30)).toList();
     }
@@ -96,30 +81,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<User> searchByUser(User u) {
         return repo.findAll(Specification
                 .where(UserSpecifications.byUsername(u.getUsername()))
-                .or(UserSpecifications.byEmail(u.getEmail()))
-                .or(UserSpecifications.byPhone(u.getPhone()))).stream().toList();
+                .or(UserSpecifications.byEmail(u.getEmail()))).stream().toList();
     }
 
     @Override
-    @Caching(
-            cacheable = @Cacheable(value = "user", key = "#result.username")
-            ,
-            put = @CachePut(value = "user", key = "#result.username")
-    )
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("load username: " + username);
-        User u = repo.findOne(UserSpecifications.byUsername(username)).get();
-
-        if (u != null) {
-            List<GrantedAuthority> roles = new ArrayList<>();
-            u.getUserAuths().forEach(auth -> {
-                roles.add(() -> {
-                    return auth.getName();
-                });
-            });
-            return new org.springframework.security.core.userdetails.User(u.getUsername(), u.getPassword(),
-                    roles);
-        } else
-            throw new UsernameNotFoundException(username + "Not found");
+    public User findByEmailOrUsername(String email, String username) {
+        // TODO Auto-generated method stub
+        return repo.findByEmailOrUsername(email, username).orElse(null);
     }
 }

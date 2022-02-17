@@ -21,7 +21,7 @@
                             onkeyup='handleInputChange(this)' pattern="^[\w]+"
                             title="Tên đăng nhập không được chứa ký tự đặc biệt!"/>
                 <div class="hasError">
-                    <span></span>
+                    <span><form:errors path="username" cssClass="error" /></span>
                 </div>
             </div>
             <div>
@@ -30,7 +30,7 @@
                             path="fullname" id="name" placeholder="................"
                             onkeyup='handleInputChange(this)' value="${result !='success'? '':user.fullname }"/>
                 <div class="hasError">
-                    <span></span>
+                    <span><form:errors path="fullname" cssClass="error" /></span>
                 </div>
             </div>
             <div>
@@ -39,7 +39,7 @@
                         path="password" id="password" placeholder="................."
                         onkeyup='handleInputChange(this)' value="${result !='success'? '':user.password }"/>
                 <div class="hasError">
-                    <span></span>
+                     <span><form:errors path="password" cssClass="error" /></span>
                 </div>
             </div>
 
@@ -49,7 +49,7 @@
                             path="email" placeholder="................"
                             onkeyup='handleInputChange(this)' value="${result !='success'? '':user.email }"/>
                 <div class="hasError">
-                    <span></span>
+                     <span><form:errors path="email" cssClass="error" /></span>
                 </div>
             </div>
             <c:if test="${result != null }">

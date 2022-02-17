@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Login</title>
     <link rel=stylesheet type="text/css" href="${pageContext.request.contextPath}/static/css/login.css">
 </head>
 <body>

@@ -8,4 +8,5 @@ public class UserRegister {
     private String password;
     private String email;
     private String fullname;
+    private long role;
 }

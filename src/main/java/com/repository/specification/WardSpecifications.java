@@ -11,7 +11,6 @@ public class WardSpecifications {
         return  new Specification<Ward>() {
             @Override
             public Predicate toPredicate(Root<Ward> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-
                 Join<Ward, District> j = root.join("district");
                 return criteriaBuilder.equal(j.get("id"), id);
             }

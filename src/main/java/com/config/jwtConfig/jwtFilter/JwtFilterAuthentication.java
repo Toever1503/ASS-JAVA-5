@@ -3,17 +3,21 @@ package com.config.jwtConfig.jwtFilter;
 import com.config.jwtConfig.jwtUtil.JwtTokenUtil;
 import com.model.ResponseData;
 import io.jsonwebtoken.ExpiredJwtException;
+import liquibase.pro.packaged.co;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,38 +26,40 @@ import java.io.Serializable;
 public class JwtFilterAuthentication extends OncePerRequestFilter implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private UserDetailsService userService;
+    private final UserDetailsService userService;
 
-    private JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    private final RequestMatcher authenticateUrl;
-
-    public JwtFilterAuthentication(RequestMatcher requiresAuthenticationRequestMatcher) {
-        this.authenticateUrl = requiresAuthenticationRequestMatcher;
-    }
-
-    public void setJwtUserDetailsService(UserDetailsService userService) {
+    public JwtFilterAuthentication(UserDetailsService userService, JwtTokenUtil jwtTokenUtil) {
         this.userService = userService;
-    }
-
-    public void setJwtTokenUtil(JwtTokenUtil jwtTokenUtil) {
         this.jwtTokenUtil = jwtTokenUtil;
     }
+
 
     // check authorize header ìf not present throw 401 else set securityContext
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("jwt filter load");
-        final String requestTokenHeader = request.getHeader("Authorization");
+
+        String userLoginToken = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (int i = 0; i < cookies.length; ++i) {
+                if (cookies[i].getName().equals("user_login")) {
+                    userLoginToken = cookies[i].getValue();
+                    break;
+                }
+            }
+        }
+
+        System.out.printf("token: " + userLoginToken);
 
         String username = null;
-        String jwtToken = null;
         // JWT Token is in the form "Bearer token". Remove Bearer word and get
         // only the Token
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = requestTokenHeader.substring(7);
+        if (userLoginToken != null && !userLoginToken.isEmpty()) {
             try {
-                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                username = jwtTokenUtil.getUsernameFromToken(userLoginToken);
             } catch (IllegalArgumentException e) {
                 System.out.println("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
@@ -67,8 +73,7 @@ public class JwtFilterAuthentication extends OncePerRequestFilter implements Ser
 
                     // if token is valid configure Spring Security to manually set
                     // authentication
-                    if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
-
+                    if (jwtTokenUtil.validateToken(userLoginToken, userDetails)) {
                         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());
                         usernamePasswordAuthenticationToken
@@ -95,8 +100,6 @@ public class JwtFilterAuthentication extends OncePerRequestFilter implements Ser
             response.setStatus(HttpStatus.FORBIDDEN.value());
             response.getWriter().println(res.toJson());
         }
-
-
     }
 
     // reuse respone for 401 request

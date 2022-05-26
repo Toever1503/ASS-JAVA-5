@@ -26,22 +26,16 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
     @Override
-    @Cacheable(key = "#id")
     public District findById(Integer id) {
         return repo.findById(id).get();
     }
 
     @Override
-    @Caching(
-            evict = {@CacheEvict(allEntries = true)},
-            put = {@CachePut(key = "#obj.id")}
-    )
     public District save(District obj) {
         return repo.saveAndFlush(obj);
     }
 
     @Override
-    @CacheEvict(allEntries = true)
     public District deleteById(Integer id) {
         District obj = findById(id);
         repo.delete(obj);
@@ -49,9 +43,13 @@ public class DistrictServiceImpl implements DistrictService {
     }
 
     @Override
-    @Cacheable(key = "#page")
-    public List<District> findAll(Specification specs, int page) {
-        return repo.findAll(specs, PageRequest.of(page, 30)).toList();
+    public List<District> findAll() {
+        return repo.findAll();
+    }
+
+    @Override
+    public List<District> findAllByProvince(Integer id) {
+        return repo.findAllByProvinceId(id);
     }
 
     @Override

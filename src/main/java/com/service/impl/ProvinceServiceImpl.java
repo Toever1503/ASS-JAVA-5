@@ -26,22 +26,16 @@ public class ProvinceServiceImpl implements ProvinceService {
     }
 
     @Override
-    @Cacheable(key = "#id")
     public Province findById(Integer id) {
         return repo.findById(id).get();
     }
 
     @Override
-    @Caching(
-            evict = {@CacheEvict(allEntries = true)},
-            put = {@CachePut(key = "#obj.id")}
-    )
     public Province save(Province obj) {
         return repo.saveAndFlush(obj);
     }
 
     @Override
-    @CacheEvict(allEntries = true)
     public Province deleteById(Integer id) {
         Province obj = findById(id);
         repo.delete(obj);
@@ -49,9 +43,8 @@ public class ProvinceServiceImpl implements ProvinceService {
     }
 
     @Override
-    @Cacheable(key = "#page")
-    public List<Province> findAll(Specification specs, int page) {
-        return repo.findAll(specs, PageRequest.of(page, 30)).toList();
+    public List<Province> findAll() {
+        return repo.findAll();
     }
 
     @Override

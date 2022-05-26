@@ -1,6 +1,8 @@
 package com.model;
 
+
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -20,5 +22,7 @@ public class UserLogin {
     private String password;
 
     @NotNull
+    @Value("false")
     private Boolean isRemember;
+
 }

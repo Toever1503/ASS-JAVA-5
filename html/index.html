@@ -7,19 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!-- Latest compiled and minified CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 
     <!-- Latest compiled JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="./css/productList.css">
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/cart.css">
 </head>
 
-<body>
+<body style="position: relative;">
     <header class="bg-dark">
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="container">
@@ -37,7 +43,8 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button"
-                                data-bs-toggle="dropdown">Account</a>
+                                data-toggle="dropdown">Account</a>
+
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#">Forgot Password</a></li>
                                 <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -94,8 +101,12 @@
                         </button>
                     </div>
                 </div>
+                <div class="titleRow">
+                    <h4 style="position: relative; z-index: 10;">New products</h4>
+                </div>
                 <div class="productContainer" style="margin: 10px 2px;">
                     <div class="productItem">
+                        <span class="badge badge-info" style="position: absolute;">New</span>
                         <a href="">
                             <div class="productImage"
                                 style="background-image: url('https://cdn.cliqueinc.com/posts/245538/western-fashion-245538-1514324735677-image.700x0c.jpg');">
@@ -109,7 +120,7 @@
                             </div>
                             <div class="productAction">
                                 <div class="btn btn-outline-primary">Add</div>
-                                <div class="btn btn-outline-primary">Buy now</div>
+                                
                             </div>
                         </div>
                     </div>
@@ -127,7 +138,7 @@
                             </div>
                             <div class="productAction">
                                 <div class="btn btn-outline-primary">Add</div>
-                                <div class="btn btn-outline-primary">Buy now</div>
+                                
                             </div>
                         </div>
                     </div>
@@ -145,7 +156,7 @@
                             </div>
                             <div class="productAction">
                                 <div class="btn btn-outline-primary">Add</div>
-                                <div class="btn btn-outline-primary">Buy now</div>
+                                
                             </div>
                         </div>
                     </div>
@@ -163,7 +174,7 @@
                             </div>
                             <div class="productAction">
                                 <div class="btn btn-outline-primary">Add</div>
-                                <div class="btn btn-outline-primary">Buy now</div>
+                                
                             </div>
                         </div>
                     </div>
@@ -181,7 +192,7 @@
                             </div>
                             <div class="productAction">
                                 <div class="btn btn-outline-primary">Add</div>
-                                <div class="btn btn-outline-primary">Buy now</div>
+                                
                             </div>
                         </div>
                     </div>
@@ -199,7 +210,7 @@
                             </div>
                             <div class="productAction">
                                 <div class="btn btn-outline-primary">Add</div>
-                                <div class="btn btn-outline-primary">Buy now</div>
+                                
                             </div>
                         </div>
                     </div>
@@ -217,28 +228,48 @@
                             </div>
                             <div class="productAction">
                                 <div class="btn btn-outline-primary">Add</div>
-                                <div class="btn btn-outline-primary">Buy now</div>
+                                
                             </div>
                         </div>
                     </div>
 
+                </div>
+                <div style="margin: 0 auto; max-width: 300px">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                          <li class="page-item"><a class="page-link" href="#">1</a></li>
+                          <li class="page-item"><a class="page-link" href="#">2</a></li>
+                          <li class="page-item"><a class="page-link" href="#">3</a></li>
+                          <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                      </nav>
                 </div>
             </div>
 
             <aside style="width: 20%; padding: 10px;">
                 <div class="cart text-center">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <a href="">Shopping Cart</a>
+                    <a href="#" id="openCart">Shopping Cart</a>
+                    <script>
+                        document.getElementById('openCart').addEventListener('click', function() {
+                            document.getElementById('cartScroll').style.display = 'block';
+                        });
+                    </script>
                 </div>
                 <div class="categories text-center">
-                    <h3 style="text-decoration: underline; text-align: left;">Categories</h3>
-                    <div class="cat"><a href="">Shirt</a></div>
-                    <div class="cat"><a href="">Blouser</a></div>
-                    <div class="cat"><a href="">Jacket</a></div>
+                    <div class="titleAside ">
+                        <h4 style="position: relative; z-index: 10;">Category</h4>
+                    </div>
+                    <div class="cat col-12"><a href="">Shirt</a></div>
+                    <div class="cat col-12"><a href="">Blouser</a></div>
+                    <div class="cat col-12"><a href="">Jacket</a></div>
                 </div>
                 <div class="topSales">
-                    <h3 style="text-decoration: underline;">Top Products</h3>
-                    <div class="productItem row">
+                    <div class="titleAside text-center">
+                        <h4 style="position: relative; z-index: 10; ">Top Sales</h4>
+                    </div>
+                    <div class="productItem">
                         <a href="" class="col-5">
                             <div class="productImage"
                                 style="background-image: url('https://cdn.cliqueinc.com/posts/245538/western-fashion-245538-1514324735677-image.700x0c.jpg');">
@@ -252,7 +283,7 @@
                             </div>
                             <div class="productAction">
                                 <div class="btn btn-outline-primary">Add</div>
-                                <div class="btn btn-outline-primary">Buy now</div>
+                                
                             </div>
                         </div>
                     </div>
@@ -264,6 +295,61 @@
     <footer class="bg-dark">
         <p class="text-center text-white">Powered by FPT Polytechnic</p>
     </footer>
+
+
+    <div id="cartScroll" class="cart-container position-absolute">
+        <div class="btn btn-outline-primary" id="closeCart">X</div>
+        <h3 class="text-center">Giỏ hàng</h3>
+
+        <script>
+            document.getElementById('closeCart').addEventListener('click', function () {
+                document.getElementById('cartScroll').style.display = 'none';
+            });
+
+            function deleteItemInCart(e, id) { //id is the id of the product in cart
+                // document.getElementById(id).remove();
+                console.log('delete')
+                //remove the item from cart html
+                e.parentNode.parentNode.remove();
+            }
+        </script>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <table class="table table-bordered table-striped mb-0">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Sản Phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng </th>
+                        <th style="width: 10px;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <img class="d-block m-auto" width="80px" height="100px"
+                                src="http://placeimg.com/640/480/animals" alt="" />
+                        </td>
+                        <td>Smanfffaa</td>
+                        <td>12999419</td>
+                        <td>
+                            <input type="number" value="1" min="1" max="1000" step="1" />
+                        </td>
+                        <td class="btn btn-outline-primary p-1 m-1" onclick="deleteItemInCart(this, 1)">x</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h3 class="text-center">Total: $<span id="cartTotalPrice">12,000</span></h3>
+        </div>
+        <div class="actionCart m-2">
+            <div class="btn btn-outline-primary">Order Now</div>
+        </div>
+        
+    </div>
+    
 </body>
 
 </html>

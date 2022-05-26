@@ -8,12 +8,25 @@
         <put-attribute name="header" value="/WEB-INF/view/layout/header.jsp"/>
         <put-attribute name="footer" value="/WEB-INF/view/layout/footer.jsp"/>
         <put-attribute name="aside" value="/WEB-INF/view/layout/aside.jsp"/>
+        <put-attribute name="cart" value="/WEB-INF/view/layout/cart.jsp"/>
+        <put-attribute name="body" value=""/>
+    </definition>
+
+    <definition name="adminLayout" template="/WEB-INF/view/admin/layout/index.jsp">
+        <put-attribute name="header" value="/WEB-INF/view/admin/layout/header.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/view/admin/layout/footer.jsp"/>
+        <put-attribute name="aside" value="/WEB-INF/view//admin/layout/aside.jsp"/>
         <put-attribute name="body" value=""/>
     </definition>
 
     <definition name="home/*" extends="mainLayout">
         <put-attribute name="body" value="/WEB-INF/view/web/{1}.jsp"/>
     </definition>
+
+    <definition name="admin/*" extends="adminLayout">
+        <put-attribute name="body" value="/WEB-INF/view/admin/{1}.jsp"/>
+    </definition>
+
     <definition name="login" template="/WEB-INF/view/web/login.jsp"/>
     <definition name="register" template="/WEB-INF/view/web/register.jsp"/>
 </tiles-definitions>

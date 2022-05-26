@@ -1,5 +1,6 @@
 package com.config.jwtConfig.jwtUtil;
 
+import com.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -1,0 +1,103 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+img{
+    width: 100%;
+}
+
+aside{
+    border-left: 1px solid black;
+    padding: 2px;
+}
+aside .cart{
+    border: 1px solid gainsboro;
+}
+
+aside .categories{
+    border: 1px solid gainsboro;
+    margin: 5px auto;
+}
+
+aside .productItem{
+    display: flex;
+    border-bottom: 1px solid gainsboro;
+}
+
+aside .topSales .productImage{
+    height: 100px;
+    background-size: cover;
+}
+.contact p{
+    padding: 0;
+    margin: 0;
+}
+.bodyContent{
+    background: #dcdcdc6b;
+}
+.productContainer .productItem{
+    background: white;
+}
+.titleRow{
+    background: yellow;
+    display: inline-block;
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 5px;
+    position: relative;
+    z-index: 10;
+}
+.titleRow::after{
+    z-index: 1;
+    position: absolute;
+    top: 6px;
+    right: -12px;
+    height: 35px;
+    width: 35px;
+    content: "";
+    display: block;
+    clear: both;
+    background-color: yellow;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+.titleAside{
+    border: 1px solid gainsboro;
+    background-color: skyblue;
+    margin: 5px;
+    border-radius: 10px;
+}
+.categories .cat{
+    position: relative;
+}
+.categories .cat::before{
+    position: absolute;
+    top: 7px;
+    left: 20px;
+    content: '';
+    width: 7px;
+    height: 7px;
+    background-color: red;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+
+}
+.topSales .productItem{
+    background-color: white;
+    margin: 5px 0;
+}
+.topSales{
+    background: #dcdcdc6b;
+}
+.topSales .productItem{
+    background-color: white;
+    margin: 5px 0;
+}
+.topSales{
+    background: #dcdcdc6b;
+}
+.productItem:hover{
+    transition: 0.2s ease-in-out;
+    border: 1px solid tomato;
+    transform: scale(1.1);
+}

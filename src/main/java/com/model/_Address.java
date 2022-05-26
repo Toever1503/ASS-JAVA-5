@@ -1,16 +1,18 @@
 package com.model;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.redis.core.RedisHash;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "address")
-@Setter
-@Getter
+@Data
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class _Address implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -22,10 +24,10 @@ public class _Address implements Serializable {
     private Integer provinceId;
 
     @Column(name = "district_id", nullable = false)
-    private Long districtId;
+    private Integer districtId;
 
     @Column(name = "ward_id", nullable = false)
-    private Long wardId;
+    private Integer wardId;
 
     @Column(name = "detail", nullable = false, length = 500)
     private String detail;

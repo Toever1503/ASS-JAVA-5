@@ -10,7 +10,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import java.util.Properties;
 
 @SpringBootApplication
-//@EnableCaching
+@EnableCaching
 public class SpringbootTrainningApplication {
 
     public static void main(String[] args) {

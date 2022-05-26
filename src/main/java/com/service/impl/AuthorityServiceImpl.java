@@ -24,22 +24,16 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    @Cacheable(key = "#id")
     public Authority findById(Long id) {
         return repo.findById(id).get();
     }
 
     @Override
-    @Caching(
-            evict = {@CacheEvict(allEntries = true)},
-            put = {@CachePut(key = "#obj.id")}
-    )
     public Authority save(Authority obj) {
         return repo.saveAndFlush(obj);
     }
 
     @Override
-    @CacheEvict(allEntries = true)
     public Authority deleteById(Long id) {
         Authority obj = findById(id);
         repo.delete(obj);
@@ -47,7 +41,6 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    @Cacheable(key = "#page")
     public List<Authority> findAll(Specification specs, int page) {
         return repo.findAll(specs, PageRequest.of(page, 30)).toList();
     }

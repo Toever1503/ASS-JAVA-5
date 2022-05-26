@@ -13,7 +13,8 @@ public interface CategoryService {
 
     Category deleteById(Long id);
 
-    List<Category> findAll(Specification specs, int page);
+    Category findByName(String name);
 
-    Long count(Specification specs);
+    List<Category> findAll();
+
 }

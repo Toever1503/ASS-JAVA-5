@@ -11,13 +11,19 @@ public interface UserService {
 
     User findByEmailOrUsername(String email, String username);
 
+    List<User> findAllByEmailOrUsername(String email, String username);
+
+    User findByUserName(String username);
+
     User save(User obj);
 
     User deleteById(Long id);
 
-    List<User> findAll(Specification specs, int page);
+    List<User> findAll( int page);
 
     Long count(Specification specs);
 
     List<User> searchByUser(User u);
+
+    User findByEmail(String email);
 }

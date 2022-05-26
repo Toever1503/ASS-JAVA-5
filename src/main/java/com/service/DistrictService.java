@@ -12,7 +12,9 @@ public interface DistrictService {
 
     District deleteById(Integer id);
 
-    List<District> findAll(Specification specs, int page);
+    List<District> findAll();
+
+    List<District> findAllByProvince(Integer id);
 
     Long count(Specification specs);
 }

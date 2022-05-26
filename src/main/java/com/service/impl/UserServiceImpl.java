@@ -1,40 +1,41 @@
 package com.service.impl;
 
 import com.model.Authority;
+import com.model.Cart;
 import com.model.User;
 import com.repository.AuthorityRepository;
 import com.repository.UserRepository;
 import com.repository.specification.UserSpecifications;
+import com.service.CartServices;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository repo;
 
-    private AuthorityRepository authorityRepository;
+    private final AuthorityRepository authorityRepository;
+
+    private final CartServices cartServices;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository) {
+    public UserServiceImpl(UserRepository userRepository, AuthorityRepository authorityRepository, CartServices cartServices) {
         this.repo = userRepository;
         this.authorityRepository = authorityRepository;
+        this.cartServices = cartServices;
     }
 
     @Override
@@ -46,6 +47,7 @@ public class UserServiceImpl implements UserService {
     public User save(User obj) {
         Set<Authority> auths = new HashSet<Authority>(); // make new auth list
 
+
         if (obj.getUserAuths() != null) { //walk through list
             obj.getUserAuths().forEach(auth -> {
                 if (auth.getId() != null) {
@@ -55,7 +57,14 @@ public class UserServiceImpl implements UserService {
             });
         }
         obj.setUserAuths(auths); // set auth agains
-        return repo.saveAndFlush(obj);
+
+        obj = repo.save(obj);
+        if (obj.getUserCart() == null) {
+            Cart cart = new Cart();
+            cart.setCartUser(obj);
+            cartServices.createCart(cart);
+        }
+        return obj;
     }
 
     @Override
@@ -67,8 +76,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAll(Specification specs, int page) {
-        return repo.findAll(specs, PageRequest.of(page, 30)).toList();
+    public List<User> findAll(int page) {
+        return repo.findAll(PageRequest.of(page, 30)).toList();
     }
 
     @Override
@@ -88,5 +97,31 @@ public class UserServiceImpl implements UserService {
     public User findByEmailOrUsername(String email, String username) {
         // TODO Auto-generated method stub
         return repo.findByEmailOrUsername(email, username).orElse(null);
+    }
+
+    @Override
+    public List<User> findAllByEmailOrUsername(String email, String username) {
+        return repo.findAllByEmailOrUsername(email, username);
+    }
+
+    @Override
+    public User findByUserName(String username) {
+        return repo.findByUsername(username).orElse(null);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return repo.findByEmailEquals(email).orElse(null);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User u = findByUserName(username);
+        if (u == null) {
+            throw new UsernameNotFoundException("NOT FOUND USERS");
+        }
+        return new org.springframework.security.core.userdetails.User(u.getUsername(), u.getPassword(),
+                u.getUserAuths().stream().map(authority -> (GrantedAuthority) () -> authority.getName()).collect(Collectors.toList())
+        );
     }
 }

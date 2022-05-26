@@ -13,7 +13,7 @@ public interface ProvinceService {
 
     Province deleteById(Integer id);
 
-    List<Province> findAll(Specification specs, int page);
+    List<Province> findAll();
 
     Long count(Specification specs);
 }

@@ -13,7 +13,9 @@ public interface WardService {
 
     Ward deleteById(Integer id);
 
-    List<Ward> findAll(Specification specs, int page);
+    List<Ward> findAll();
+
+    List<Ward> findAllByDistrict(Integer id);
 
     Long count(Specification specs);
 }

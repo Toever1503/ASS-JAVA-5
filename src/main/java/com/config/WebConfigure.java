@@ -15,8 +15,10 @@ public class WebConfigure implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static**").addResourceLocations("/WEB-INF/static");
+        registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/static/");
+//                registry.addResourceHandler("/image/**").addResourceLocations("D:\\Github\\ASS JAVA 5\\FileUpload/image/");
     }
+
 
     @Bean
     public TilesConfigurer tilesConfigurer() {

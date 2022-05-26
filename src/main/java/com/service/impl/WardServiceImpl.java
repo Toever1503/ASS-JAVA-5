@@ -13,7 +13,6 @@ import java.util.List;
 
 
 @Service
-@CacheConfig(cacheNames = "wards")
 public class WardServiceImpl implements WardService {
 
     private final WardRepository repo;
@@ -24,22 +23,17 @@ public class WardServiceImpl implements WardService {
     }
 
     @Override
-    @Cacheable(key = "#id")
     public Ward findById(Integer id) {
         return repo.findById(id).get();
     }
 
     @Override
-    @Caching(
-            evict = {@CacheEvict(allEntries = true)},
-            put = {@CachePut(key = "#obj.id")}
-    )
+
     public Ward save(Ward obj) {
         return repo.saveAndFlush(obj);
     }
 
     @Override
-    @CacheEvict(allEntries = true)
     public Ward deleteById(Integer id) {
         Ward obj = findById(id);
         repo.delete(obj);
@@ -47,9 +41,13 @@ public class WardServiceImpl implements WardService {
     }
 
     @Override
-    @Cacheable(key = "#page")
-    public List<Ward> findAll(Specification specs, int page) {
-        return repo.findAll(specs, PageRequest.of(page, 30)).toList();
+    public List<Ward> findAll() {
+        return repo.findAll();
+    }
+
+    @Override
+    public List<Ward> findAllByDistrict(Integer id) {
+        return repo.findAllByDistrictId(id);
     }
 
     @Override

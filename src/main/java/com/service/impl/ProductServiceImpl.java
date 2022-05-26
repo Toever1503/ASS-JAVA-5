@@ -2,16 +2,12 @@ package com.service.impl;
 
 import com.model.Product;
 import com.repository.ProductRepository;
-import com.repository.specification.ProductSpecifications;
-import com.repository.specification.model.ProductFilter;
 import com.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -28,22 +24,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Cacheable(key = "#id")
     public Product findById(Long id) {
-        return repo.findById(id).get();
+        return repo.findById(id).orElse(null);
     }
 
     @Override
-    @Caching(
-            evict = {@CacheEvict(allEntries = true)},
-            put = {@CachePut(key = "#obj.id")}
-    )
     public Product save(Product obj) {
         return repo.saveAndFlush(obj);
     }
 
     @Override
-    @CacheEvict(allEntries = true)
     public Product deleteById(Long id) {
         Product obj = findById(id);
         repo.delete(obj);
@@ -51,13 +41,28 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Cacheable(key = "#page")
-    public List<Product> findAll(Specification specs, int page) {
-        return repo.findAll(specs, PageRequest.of(page, 30)).toList();
+    public Page<Product> findAll(int page) {
+        return repo.findAll(PageRequest.of(page, 15).withSort(Sort.by("id").descending()));
+    }
+
+    @Override
+    public Page<Product> findAllByCategory(Long catId, Pageable page) {
+        return repo.findAllOfCat(catId, page);
     }
 
     @Override
     public Long count(Specification specs) {
         return repo.count(specs);
+    }
+
+
+    @Override
+    public Page<Product> findAllByTitleLike(String q, Integer page) {
+        return repo.findAllByTitleLike(q, PageRequest.of(page, 10));
+    }
+
+    @Override
+    public List<Product> findTopSales() {
+        return repo.findTopSales();
     }
 }
